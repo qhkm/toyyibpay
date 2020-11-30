@@ -23,8 +23,10 @@ type BankFPX struct {
 	Name string `json:"NAME"`
 }
 
+// BankFPXList ...
 type BankFPXList []BankFPX
 
+// GetBankList ...
 func (c *Client) GetBankList() (BankList, error) {
 	var err error
 	bankResponse := BankList{}
