@@ -1,4 +1,4 @@
-module toyyibpay
+module github.com/qhkm/toyyibpay
 
 go 1.15
 
