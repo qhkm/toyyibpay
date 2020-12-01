@@ -3,10 +3,7 @@ Toyyibpay unnofficial client SDK written in Golang
 
 
 ## Coverage (WIP)
----
-
 ## Usage
----
 ### Create client
 ```go
 import "github.com/qhkm/toyyibpay"
@@ -35,7 +32,7 @@ resp, err := client.GetTransactions(params)
 ```
 
 ### Work in progress ...
----
+
 
 ## How to Contribute
    - Fork a repository
