@@ -1,7 +1,6 @@
 package toyyibpay
 
 import (
-	"fmt"
 	"log"
 )
 
@@ -71,8 +70,6 @@ func (c *Client) GetCategory(transactionParams interface{}) (*APICategoryRespons
 		log.Fatal(err)
 		return nil, err
 	}
-
-	fmt.Println("categoryResponse ", categoryResponse)
 
 	return categoryResponse, nil
 }

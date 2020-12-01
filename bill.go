@@ -1,7 +1,6 @@
 package toyyibpay
 
 import (
-	"fmt"
 	"log"
 )
 
@@ -158,8 +157,6 @@ func (c *Client) GetTransactions(transactionParams interface{}) ([]BillTransacti
 		return nil, err
 	}
 
-	fmt.Println("billResponse ", billResponse)
-
 	return billResponse, nil
 }
 
@@ -183,7 +180,6 @@ func (c *Client) RunBill(params RunBillParams) (string, error) {
 		return "", err
 	}
 
-	// fmt.Printf("resp: %s", resp.Body)
 	return *resp.Body, nil
 }
 

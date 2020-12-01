@@ -1,7 +1,6 @@
 package toyyibpay
 
 import (
-	"fmt"
 	"log"
 )
 
@@ -44,8 +43,6 @@ func (c *Client) GetBankList() (BankList, error) {
 		return nil, err
 	}
 
-	fmt.Println("billResponse ", bankResponse)
-
 	return bankResponse, nil
 }
 
@@ -66,8 +63,6 @@ func (c *Client) GetFPXCode() (BankFPXList, error) {
 		log.Fatal(err)
 		return nil, err
 	}
-
-	fmt.Println("billResponse ", bankFPXResponse)
 
 	return bankFPXResponse, nil
 }

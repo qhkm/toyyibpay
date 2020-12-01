@@ -29,7 +29,7 @@ func GetAPIPath(action string) string {
 	}
 
 	u, err := url.Parse(baseURL)
-	fmt.Println("getApiPath \n", u)
+
 	if err != nil {
 		return ""
 	}

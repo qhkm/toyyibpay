@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -34,7 +33,6 @@ type ErrorResponse struct {
 // NewClient creates new client for toyyibpay
 func NewClient(secretKey string) (*Client, error) {
 
-	fmt.Println(secretKey)
 	if secretKey == "" {
 		return nil, errors.New("secretKey are required to create a Client")
 	}
@@ -60,7 +58,6 @@ func (c *Client) NewRequest(task string, payload interface{}) (*http.Request, er
 	}
 
 	url := GetAPIPath(task)
-	fmt.Printf("%s\n", url)
 	return http.NewRequest("POST", url, strings.NewReader(b.Encode()))
 }
 
@@ -110,10 +107,6 @@ func (c *Client) CallWithJSONResponse(req *http.Request, resVal interface{}) err
 		return err
 	}
 
-	// FOR TESTING
-	// body, err := ioutil.ReadAll(resp.Body)
-	// fmt.Println(string(body))
-
 	dec := json.NewDecoder(resp.Body)
 	for {
 		if err := dec.Decode(&resVal); err == io.EOF {
@@ -121,10 +114,7 @@ func (c *Client) CallWithJSONResponse(req *http.Request, resVal interface{}) err
 		} else if err != nil {
 			log.Fatal(err)
 		}
-		// fmt.Printf("billName: %v", resVal)
 	}
-
-	fmt.Println("resVal", resVal)
 
 	return nil
 }
@@ -150,9 +140,7 @@ func (c *Client) CallWithHTMLResponse(req *http.Request, resVal interface{}) err
 
 	returnValue := resVal.(*RunBillResponse)
 	returnValue.Body = &stringifiedHTMLResponse
-	// fmt.Printf("%s", another.Body)
 
-	//  = string(aha)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -181,7 +169,6 @@ func (c *Client) CallWithHTMLResponse(req *http.Request, resVal interface{}) err
 		} else if err != nil {
 			log.Fatal(err)
 		}
-		// fmt.Printf("billName: %v", resVal)
 	}
 
 	return nil
