@@ -3,7 +3,11 @@ Toyyibpay unnofficial client SDK written in Golang
 
 
 ## Coverage (WIP)
-## Usage
+## Quickstart
+### Install
+```go
+go get github.com/qhkm/toyyibpay
+```
 ### Create client
 ```go
 import "github.com/qhkm/toyyibpay"
