@@ -1,9 +1,5 @@
 package toyyibpay
 
-import (
-	"log"
-)
-
 type IBank interface {
 	getBank() Bank
 	getBankFPX()
@@ -32,14 +28,12 @@ func (c *Client) GetBankList() (BankList, error) {
 	req, err := c.NewRequest("getBank", nil)
 
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 
 	err = c.CallWithJSONResponse(req, &bankResponse)
 
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 
@@ -53,14 +47,12 @@ func (c *Client) GetFPXCode() (BankFPXList, error) {
 	req, err := c.NewRequest("getBankFPX", nil)
 
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 
 	err = c.CallWithJSONResponse(req, &bankFPXResponse)
 
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 

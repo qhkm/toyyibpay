@@ -1,9 +1,5 @@
 package toyyibpay
 
-import (
-	"log"
-)
-
 type (
 	// Bill is the resource representing Toyyibpay event
 	Bill struct {
@@ -98,45 +94,36 @@ type (
 	// 	BillResponse
 	// }
 
+	// BillResponse ...
 	BillResponse struct {
 		BillCode string
 	}
 
+	//APIBillResponse ...
 	APIBillResponse []BillResponse
 
+	// RunBillResponse ...
 	RunBillResponse struct {
 		Body *string
 	}
+
+	// APIResponse ...
+	APIResponse struct {
+		BillCode string
+	}
+
+	// ResponseStruct ...
+	ResponseStruct map[string]interface{}
 )
-
-// APIResponse ...
-type APIResponse struct {
-	BillCode string
-}
-
-// ResponseStruct ...
-type ResponseStruct map[string]interface{}
 
 // CreateSingleBill will create a single bill and return the unique code id
 func (c *Client) CreateSingleBill(billParams CreateBillParams) (string, error) {
-
 	var err error
 	billResponse := &APIBillResponse{}
 	billParams.UserSecretKey = c.UserSecretKey
 	req, err := c.NewRequest("createBill", billParams)
-
-	if err != nil {
-		return "", err
-	}
-
 	err = c.CallWithJSONResponse(req, billResponse)
-
-	if err != nil {
-		return "", err
-	}
-	// billResponse
-
-	return (*billResponse)[0].BillCode, nil
+	return (*billResponse)[0].BillCode, err
 }
 
 // GetTransactions ...
@@ -144,43 +131,18 @@ func (c *Client) GetTransactions(transactionParams interface{}) ([]BillTransacti
 	var err error
 	billResponse := []BillTransactionsResponse{}
 	req, err := c.NewRequest("getBillTransactions", transactionParams)
-
-	if err != nil {
-		log.Fatal(err)
-		return nil, err
-	}
-
 	err = c.CallWithJSONResponse(req, &billResponse)
-
-	if err != nil {
-		log.Fatal(err)
-		return nil, err
-	}
-
-	return billResponse, nil
+	return billResponse, err
 }
 
 // RunBill ...
 func (c *Client) RunBill(params RunBillParams) (string, error) {
-
 	var err error
 	resp := &RunBillResponse{}
 	params.UserSecretKey = c.UserSecretKey
 	req, err := c.NewRequest("runBill", params)
-
-	if err != nil {
-		log.Fatal(err)
-		return "", err
-	}
-
 	err = c.CallWithHTMLResponse(req, resp)
-
-	if err != nil {
-		log.Fatal(err)
-		return "", err
-	}
-
-	return *resp.Body, nil
+	return *resp.Body, err
 }
 
 // CreateMulti ...
