@@ -2,7 +2,6 @@ package toyyibpay
 
 import (
 	"fmt"
-	"log"
 	"net/url"
 	"os"
 )
@@ -11,11 +10,12 @@ const baseURLDev string = "https://dev.toyyibpay.com/index.php/api/"
 const baseURLProd string = "https://toyyibpay.com/index.php/api/"
 
 // CheckErr ...
-func CheckErr(err error) {
+func CheckErr(err error) error {
 	if err != nil {
 		// :TODO use errors package to handle error more elegantly
-		log.Fatal(err)
+		return err
 	}
+	return nil
 }
 
 // GetAPIPath ...

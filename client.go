@@ -7,7 +7,6 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -91,7 +90,7 @@ func (c *Client) CallWithJSONResponse(req *http.Request, resVal interface{}) err
 	resp, err = c.Backend.Do(req)
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	defer resp.Body.Close()
@@ -112,7 +111,7 @@ func (c *Client) CallWithJSONResponse(req *http.Request, resVal interface{}) err
 		if err := dec.Decode(&resVal); err == io.EOF {
 			break
 		} else if err != nil {
-			log.Fatal(err)
+			return err
 		}
 	}
 
@@ -142,11 +141,7 @@ func (c *Client) CallWithHTMLResponse(req *http.Request, resVal interface{}) err
 	returnValue.Body = &stringifiedHTMLResponse
 
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	defer resp.Body.Close()
@@ -167,7 +162,7 @@ func (c *Client) CallWithHTMLResponse(req *http.Request, resVal interface{}) err
 		if err := dec.Decode(&resVal); err == io.EOF {
 			break
 		} else if err != nil {
-			log.Fatal(err)
+			return err
 		}
 	}
 

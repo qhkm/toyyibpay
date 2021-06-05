@@ -1,9 +1,5 @@
 package toyyibpay
 
-import (
-	"log"
-)
-
 type Category struct {
 }
 
@@ -28,19 +24,8 @@ func (c *Client) CreateCategory(billParams CategoryParam) (string, error) {
 	categoryResponse := &CategoryResponseList{}
 	billParams.UserSecretKey = c.UserSecretKey
 	req, err := c.NewRequest("createCategory", billParams)
-
-	if err != nil {
-		return "", err
-	}
-
 	err = c.CallWithJSONResponse(req, categoryResponse)
-
-	if err != nil {
-		return "", err
-	}
-	// billResponse
-
-	return (*categoryResponse)[0].CategoryCode, nil
+	return (*categoryResponse)[0].CategoryCode, err
 }
 
 // APIGetCategoryResponse ...
@@ -58,18 +43,6 @@ func (c *Client) GetCategory(transactionParams interface{}) (*APICategoryRespons
 	var err error
 	categoryResponse := &APICategoryResponseList{}
 	req, err := c.NewRequest("getCategory", transactionParams)
-
-	if err != nil {
-		log.Fatal(err)
-		return nil, err
-	}
-
 	err = c.CallWithJSONResponse(req, categoryResponse)
-
-	if err != nil {
-		log.Fatal(err)
-		return nil, err
-	}
-
-	return categoryResponse, nil
+	return categoryResponse, err
 }
