@@ -18,6 +18,7 @@ import (
 // Client contains all resource for toyyibpay
 type Client struct {
 	UserSecretKey string
+	BaseURL       string
 	Backend       *http.Client
 }
 
@@ -29,8 +30,27 @@ type ErrorResponse struct {
 	Message  string         `json:"message"`
 }
 
-// NewClient creates new client for toyyibpay
-func NewClient(secretKey string) (*Client, error) {
+// NewClient creates new client for toyyibpay. First arg SecretKey, second arg Toyyibpay API base URL
+// trailing arguments to avoid breaking any existing implementation
+func NewClient(params ...string) (*Client, error) {
+	var (
+		secretKey string
+		baseURL   string
+	)
+
+	switch len(params) {
+	case 0:
+		return nil, errors.New("Not enough arguments. Need 2. SecretKey and BaseURL")
+	case 1:
+		secretKey = params[0]
+		break
+	case 2:
+		secretKey = params[0]
+		baseURL = params[1]
+		break
+	default:
+		return nil, errors.New("Too many arguments. Need 2. SecretKey and BaseURL")
+	}
 
 	if secretKey == "" {
 		return nil, errors.New("secretKey are required to create a Client")
@@ -38,6 +58,7 @@ func NewClient(secretKey string) (*Client, error) {
 	client := &Client{
 		UserSecretKey: secretKey,
 		Backend:       &http.Client{},
+		BaseURL:       baseURL,
 	}
 	return client, nil
 }
@@ -48,6 +69,8 @@ func (c *Client) NewRequest(task string, payload interface{}) (*http.Request, er
 	// var buf io.Reader
 	var b url.Values
 	var err error
+	var url string
+
 	if payload != nil {
 		b, err = form.EncodeToValues(payload)
 		if err != nil {
@@ -56,7 +79,12 @@ func (c *Client) NewRequest(task string, payload interface{}) (*http.Request, er
 		// buf = bytes.NewBuffer()
 	}
 
-	url := GetAPIPath(task)
+	url, err = c.GetAPIPath(task)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return http.NewRequest("POST", url, strings.NewReader(b.Encode()))
 }
 

@@ -19,21 +19,26 @@ func CheckErr(err error) error {
 }
 
 // GetAPIPath ...
-func GetAPIPath(action string) string {
-	var baseURL string
+func (c *Client) GetAPIPath(action string) (string, error) {
+	baseURL := c.BaseURL
 
-	if getEnv() == "production" {
-		baseURL = baseURLProd
-	} else {
-		baseURL = baseURLDev
+	if baseURL == "" {
+		if getEnv() == "production" {
+			baseURL = baseURLProd
+		} else {
+			baseURL = baseURLDev
+		}
 	}
 
 	u, err := url.Parse(baseURL)
 
 	if err != nil {
-		return ""
+		return "", err
 	}
-	return fmt.Sprintf("%s%s", u.String(), action)
+	if u.Host[len(u.Host)-1:] != "/" {
+		baseURL = fmt.Sprintf(baseURL + "/")
+	}
+	return fmt.Sprintf("%s%s", u.String(), action), nil
 }
 
 // GetEnv ...
